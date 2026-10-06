@@ -13,7 +13,13 @@ ruan-u-oss, Linux 5.10.198 GKI).
 | Network | TCP BBR as the default congestion control |
 | Version | `5.10.198-caramel` |
 
-Use the official KernelSU manager. For SUSFS settings, install the
+KernelSU is pinned to a main-branch commit (SUSFS targets main, not a
+release), which is newer than the latest manager release. Use the manager
+built from the same commit, from KernelSU's CI: the `manager` artifact of
+the "Build Manager" run for 0ff54fab
+(https://github.com/tiann/KernelSU/actions/runs/37125049434),
+`KernelSU_v3.3.0-55-g0ff54fab_32656-release.apk`. An older manager
+reports a version/uapi mismatch. For SUSFS settings, install the
 susfs4ksu module from the SUSFS repo.
 
 ## Compatibility
