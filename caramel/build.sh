@@ -42,6 +42,7 @@ git clone -q "$AK3_REPO" "$AK3"
 git -C "$AK3" checkout -q "$AK3_REV"
 rm -rf "$AK3"/.git* "$AK3"/README.md "$AK3"/modules "$AK3"/patch "$AK3"/ramdisk
 cp "$KDIR/caramel/anykernel.sh" "$AK3/anykernel.sh"
+cp "$KDIR/caramel/banner" "$AK3/banner"
 cp "$OUT/arch/arm64/boot/Image" "$AK3/Image"
 
 ZIP="$OUT/caramel-$RELEASE-$(date +%Y%m%d).zip"
