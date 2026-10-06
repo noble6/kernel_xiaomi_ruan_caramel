@@ -103,9 +103,11 @@ $(eval KSU_VERSION=$(shell expr 30000 + $(KSU_GIT_VERSION)))
 $(info -- KernelSU version: $(KSU_VERSION))
 ccflags-y += -DKSU_VERSION=$(KSU_VERSION)
 else
-# If there is no .git directory, use default version
-$(warning "KSU_GIT_VERSION not defined! It is better to make KernelSU a git repository!")
-ccflags-y += -DKSU_VERSION=16
+# caramel: KernelSU is vendored without its git history, so use the version
+# of the imported upstream commit (30000 + rev-list count), kept in VERSION.
+KSU_VERSION := $(shell cat $(KSU_KERNEL_DIR)/../VERSION)
+$(info -- KernelSU version: $(KSU_VERSION) (vendored))
+ccflags-y += -DKSU_VERSION=$(KSU_VERSION)
 endif
 
 KSU_NEW_DCACHE_FLUSH := $(shell grep -q __flush_dcache_area $(srctree)/arch/arm64/include/asm/cacheflush.h ; echo $$?)
