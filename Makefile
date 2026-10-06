@@ -1397,7 +1397,7 @@ $(sort $(vmlinux-deps) $(subdir-modorder)): descend ;
 #	echo "$(KERNELVERSION)$$($(CONFIG_SHELL) $(srctree)/scripts/setlocalversion \
 #		$(srctree) $(BRANCH) $(KMI_GENERATION))"
 filechk_kernel.release = \
-	echo "$(KERNELVERSION)"
+	echo "$(KERNELVERSION)$(patsubst "%",%,$(CONFIG_LOCALVERSION))"
 
 # Store (new) KERNELRELEASE string in include/config/kernel.release
 include/config/kernel.release: FORCE
