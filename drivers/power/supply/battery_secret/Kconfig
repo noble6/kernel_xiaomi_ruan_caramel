@@ -1,0 +1,5 @@
+config BATT_VERIFY
+	tristate "auth battery driver"
+	default n
+	help
+		It needs a onewire physical controller to work.

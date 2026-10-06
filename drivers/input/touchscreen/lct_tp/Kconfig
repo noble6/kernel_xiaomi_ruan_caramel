@@ -1,0 +1,9 @@
+#
+# Lct tp driver configuration
+#
+config TOUCHSCREEN_COMMON
+	tristate "Lct tp driver"
+	help
+	  Say Y here if you have a Lct tp driver
+
+	  If unsure, say N.
