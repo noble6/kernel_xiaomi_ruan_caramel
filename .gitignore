@@ -164,3 +164,6 @@ arch/arm/boot/dts/vendor
 
 # Documentation toolchain
 sphinx_*/
+
+# KernelSU-Next (synced as a separate repo project)
+/KernelSU-Next/
