@@ -28,6 +28,7 @@
 #include "smp.h"
 
 #include <trace/hooks/sched.h>
+#include <trace/hooks/bore.h>
 #include <trace/hooks/dtask.h>
 
 /*
@@ -886,6 +887,8 @@ static void set_load_weight(struct task_struct *p)
 	bool update_load = !(READ_ONCE(p->state) & TASK_NEW);
 	int prio = p->static_prio - MAX_RT_PRIO;
 	struct load_weight *load = &p->se.load;
+
+	trace_android_vh_bore_set_load_weight(p, &prio);
 
 	/*
 	 * SCHED_IDLE tasks get minimal weight:
@@ -3310,6 +3313,7 @@ static void __sched_fork(unsigned long clone_flags, struct task_struct *p)
 	p->se.nr_migrations		= 0;
 	p->se.vruntime			= 0;
 	INIT_LIST_HEAD(&p->se.group_node);
+	trace_android_vh_bore_init_entity(&p->se);
 
 #ifdef CONFIG_FAIR_GROUP_SCHED
 	p->se.cfs_rq			= NULL;

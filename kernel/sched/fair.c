@@ -23,6 +23,7 @@
 #include "sched.h"
 
 #include <trace/hooks/sched.h>
+#include <trace/hooks/bore.h>
 
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_runtime);
 
@@ -864,6 +865,8 @@ static void update_curr(struct cfs_rq *cfs_rq)
 	struct sched_entity *curr = cfs_rq->curr;
 	u64 now = rq_clock_task(rq_of(cfs_rq));
 	u64 delta_exec;
+	struct task_struct *bore_task = NULL;
+	int bore_prio = -1;
 
 	if (unlikely(!curr))
 		return;
@@ -889,9 +892,18 @@ static void update_curr(struct cfs_rq *cfs_rq)
 		trace_sched_stat_runtime(curtask, delta_exec, curr->vruntime);
 		cgroup_account_cputime(curtask, delta_exec);
 		account_group_exec_runtime(curtask, delta_exec);
+		trace_android_vh_bore_update_curr(curtask, delta_exec, &bore_prio);
+		bore_task = curtask;
 	}
 
 	account_cfs_rq_runtime(cfs_rq, delta_exec);
+
+	/*
+	 * BORE changed the task's effective priority: reweight it. This calls
+	 * update_curr() again, which returns early as no time has passed.
+	 */
+	if (unlikely(bore_prio >= 0) && bore_task->sched_class == &fair_sched_class)
+		reweight_task(bore_task, bore_prio);
 }
 
 static void update_curr_fair(struct rq *rq)
@@ -4635,6 +4647,8 @@ check_preempt_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr)
 
 void set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
 {
+	trace_android_vh_bore_set_next_entity(se);
+
 	/* 'current' is not kept within the tree. */
 	if (se->on_rq) {
 		/*
@@ -5852,6 +5866,7 @@ static void dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
 	int idle_h_nr_running = task_has_idle_policy(p);
 	bool was_sched_idle = sched_idle_rq(rq);
 
+	trace_android_vh_bore_dequeue_task_fair(p, flags);
 	util_est_dequeue(&rq->cfs, p);
 
 	for_each_sched_entity(se) {
@@ -7541,6 +7556,8 @@ static void yield_task_fair(struct rq *rq)
 	struct task_struct *curr = rq->curr;
 	struct cfs_rq *cfs_rq = task_cfs_rq(curr);
 	struct sched_entity *se = &curr->se;
+
+	trace_android_vh_bore_yield_task_fair(curr);
 
 	/*
 	 * Are we the only task in the tree?
@@ -11171,6 +11188,8 @@ static void task_fork_fair(struct task_struct *p)
 
 	rq_lock(rq, &rf);
 	update_rq_clock(rq);
+
+	trace_android_vh_bore_task_fork(p);
 
 	cfs_rq = task_cfs_rq(current);
 	curr = cfs_rq->curr;

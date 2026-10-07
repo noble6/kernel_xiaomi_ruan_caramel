@@ -44,6 +44,7 @@
 #include <trace/hooks/iommu.h>
 #include <trace/hooks/thermal.h>
 #include <trace/hooks/ufshcd.h>
+#include <trace/hooks/bore.h>
 #include <trace/hooks/block.h>
 #include <trace/hooks/cgroup.h>
 #include <trace/hooks/sys.h>
@@ -506,6 +507,13 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_compl_rsp_check_done);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_err_handler);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_err_check_ctrl);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_err_print_ctrl);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bore_update_curr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bore_dequeue_task_fair);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bore_set_next_entity);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bore_yield_task_fair);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bore_task_fork);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bore_init_entity);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bore_set_load_weight);
 /*
  * For type visibility
  */
