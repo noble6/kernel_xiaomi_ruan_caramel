@@ -815,6 +815,16 @@ config GENERIC_SCHED_CLOCK
 
 menu "Scheduler features"
 
+config SCHED_BORE
+	bool "BORE (Burst-Oriented Response Enhancer)"
+	depends on ANDROID_VENDOR_HOOKS && ANDROID_KABI_RESERVE
+	help
+	  Lower the CFS weight of tasks that run long bursts without
+	  sleeping, so that interactive tasks get the CPU sooner. Hooks into
+	  CFS through the android_vh_bore_* vendor hooks and keeps its state
+	  in the sched_entity's reserved KABI fields, so the KMI is unchanged.
+	  Tunable in /proc/sys/kernel/sched_bore*.
+
 config UCLAMP_TASK
 	bool "Enable utilization clamping for RT/FAIR tasks"
 	depends on CPU_FREQ_GOV_SCHEDUTIL
