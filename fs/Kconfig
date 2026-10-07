@@ -117,6 +117,8 @@ source "fs/verity/Kconfig"
 
 source "fs/notify/Kconfig"
 
+source "fs/nomount/Kconfig"
+
 source "fs/quota/Kconfig"
 
 source "fs/autofs/Kconfig"
