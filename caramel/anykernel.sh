@@ -5,7 +5,7 @@
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=caramel kernel for ruan
+kernel.string=caramel v2 for ruan by 4-8-2-1-1-7
 do.devicecheck=1
 do.modules=0
 do.systemless=0
