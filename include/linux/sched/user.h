@@ -21,10 +21,6 @@ struct user_struct {
 #ifdef CONFIG_EPOLL
 	atomic_long_t epoll_watches; /* The number of file descriptors currently watched */
 #endif
-#ifdef CONFIG_POSIX_MQUEUE
-	/* protected by mq_lock	*/
-	unsigned long mq_bytes;	/* How many bytes can be allocated to mqueue? */
-#endif
 	unsigned long locked_shm; /* How many pages of mlocked shm ? */
 	unsigned long unix_inflight;	/* How many files in flight in unix sockets */
 	atomic_long_t pipe_bufs;  /* how many pages are allocated in pipe buffers */
@@ -44,7 +40,13 @@ struct user_struct {
 	/* Miscellaneous per-user rate limit */
 	struct ratelimit_state ratelimit;
 
+#ifdef CONFIG_POSIX_MQUEUE
+	/* In a reserved field to keep the KMI with CONFIG_POSIX_MQUEUE. */
+	/* protected by mq_lock	*/
+	ANDROID_KABI_USE(1, unsigned long mq_bytes); /* How many bytes can be allocated to mqueue? */
+#else
 	ANDROID_KABI_RESERVE(1);
+#endif
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_OEM_DATA_ARRAY(1, 2);
 };
