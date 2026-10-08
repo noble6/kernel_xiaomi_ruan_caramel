@@ -392,6 +392,7 @@
 #define GITS_TYPER_VLPIS		(1UL << 1)
 #define GITS_TYPER_ITT_ENTRY_SIZE_SHIFT	4
 #define GITS_TYPER_ITT_ENTRY_SIZE	GENMASK_ULL(7, 4)
+#define GITS_TYPER_IDBITS		GENMASK_ULL(12, 8)
 #define GITS_TYPER_IDBITS_SHIFT		8
 #define GITS_TYPER_DEVBITS_SHIFT	13
 #define GITS_TYPER_DEVBITS		GENMASK_ULL(17, 13)
@@ -723,6 +724,9 @@ static inline bool gic_enable_sre(void)
 }
 
 void gic_resume(void);
+void gic_dist_init(void);
+void gic_cpu_init(void);
+void gic_dist_wait_for_rwp(void);
 
 #endif
 

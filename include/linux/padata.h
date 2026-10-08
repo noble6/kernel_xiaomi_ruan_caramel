@@ -12,6 +12,7 @@
 #ifndef PADATA_H
 #define PADATA_H
 
+#include <linux/refcount.h>
 #include <linux/compiler_types.h>
 #include <linux/workqueue.h>
 #include <linux/spinlock.h>
@@ -89,20 +90,16 @@ struct padata_cpumask {
  * @processed: Number of already processed objects.
  * @cpu: Next CPU to be processed.
  * @cpumask: The cpumasks in use for parallel and serial workers.
- * @reorder_work: work struct for reordering.
- * @lock: Reorder lock.
  */
 struct parallel_data {
 	struct padata_shell		*ps;
 	struct padata_list		__percpu *reorder_list;
 	struct padata_serial_queue	__percpu *squeue;
-	atomic_t			refcnt;
+	refcount_t			refcnt;
 	unsigned int			seq_nr;
 	unsigned int			processed;
 	int				cpu;
 	struct padata_cpumask		cpumask;
-	struct work_struct		reorder_work;
-	spinlock_t                      ____cacheline_aligned lock;
 };
 
 /**

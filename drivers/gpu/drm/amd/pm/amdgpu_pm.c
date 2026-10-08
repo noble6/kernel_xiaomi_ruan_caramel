@@ -776,7 +776,7 @@ static ssize_t amdgpu_set_pp_od_clk_voltage(struct device *dev,
 	if (amdgpu_in_reset(adev))
 		return -EPERM;
 
-	if (count > 127)
+	if (count > 127 || count == 0)
 		return -EINVAL;
 
 	if (*buf == 's')
@@ -792,7 +792,8 @@ static ssize_t amdgpu_set_pp_od_clk_voltage(struct device *dev,
 	else
 		return -EINVAL;
 
-	memcpy(buf_cpy, buf, count+1);
+	memcpy(buf_cpy, buf, count);
+	buf_cpy[count] = 0;
 
 	tmp_str = buf_cpy;
 
@@ -806,6 +807,9 @@ static ssize_t amdgpu_set_pp_od_clk_voltage(struct device *dev,
 		if (ret)
 			return -EINVAL;
 		parameter_size++;
+
+		if (!tmp_str)
+			break;
 
 		while (isspace(*tmp_str))
 			tmp_str++;
@@ -1990,20 +1994,18 @@ static ssize_t amdgpu_get_gpu_metrics(struct device *dev,
 		return ret;
 	}
 
+	mutex_lock(&adev->pm.mutex);
 	if (is_support_sw_smu(adev))
 		size = smu_sys_get_gpu_metrics(&adev->smu, &gpu_metrics);
 	else if (adev->powerplay.pp_funcs->get_gpu_metrics)
 		size = amdgpu_dpm_get_gpu_metrics(adev, &gpu_metrics);
 
-	if (size <= 0)
-		goto out;
+	if (size > 0) {
+		size = min_t(ssize_t, size, PAGE_SIZE - 1);
+		memcpy(buf, gpu_metrics, size);
+	}
+	mutex_unlock(&adev->pm.mutex);
 
-	if (size >= PAGE_SIZE)
-		size = PAGE_SIZE - 1;
-
-	memcpy(buf, gpu_metrics, size);
-
-out:
 	pm_runtime_mark_last_busy(ddev->dev);
 	pm_runtime_put_autosuspend(ddev->dev);
 
