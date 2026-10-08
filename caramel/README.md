@@ -2,7 +2,7 @@
 
 Custom kernel for the Redmi Pad Pro 5G / POCO Pad 5G (ruan), built on
 [kernel_xiaomi_ruan](https://github.com/noble6/kernel_xiaomi_ruan) (Xiaomi's
-ruan-u-oss, Linux 5.10.198 GKI).
+ruan-u-oss, updated to Linux 5.10.269 GKI from ACK android12-5.10).
 
 ## What's in it
 
@@ -10,8 +10,10 @@ ruan-u-oss, Linux 5.10.198 GKI).
 |---|---|
 | Root | Official [KernelSU](https://github.com/tiann/KernelSU) (built in), version 32656 |
 | Root hiding | [SUSFS](https://gitlab.com/simonpunk/susfs4ksu) v2.3.0, all features enabled |
+| Scheduler | [BORE](https://github.com/firelzrd/bore-scheduler) (Burst-Oriented Response Enhancer), on CFS through vendor hooks |
+| Module mounts | NoMount v2.1.0, VFS path redirection for metamodules |
 | Network | TCP BBR as the default congestion control |
-| Version | `5.10.198-caramel` |
+| Version | `5.10.269-caramel-v3` |
 
 KernelSU is pinned to a main-branch commit (SUSFS targets main, not a
 release), which is newer than the latest manager release. Use the manager

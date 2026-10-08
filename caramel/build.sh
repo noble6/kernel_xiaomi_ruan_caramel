@@ -10,7 +10,7 @@
 set -euo pipefail
 
 KDIR=$(cd "$(dirname "$0")/.." && pwd)
-OUT=${OUT:-$KDIR/out}
+OUT=$(realpath -m "${OUT:-$KDIR/out}")
 CLANG_DIR=${1:-${CLANG_DIR:-}}
 AK3_REPO=https://github.com/osm0sis/AnyKernel3
 AK3_REV=020dfec
