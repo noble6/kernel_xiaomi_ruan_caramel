@@ -100,6 +100,8 @@ struct uvc_video {
 	struct list_head req_free;
 	spinlock_t req_lock;
 
+	unsigned int req_int_count;
+
 	void (*encode) (struct usb_request *req, struct uvc_video *video,
 			struct uvc_buffer *buf);
 
@@ -123,6 +125,9 @@ struct uvc_device {
 	enum uvc_state state;
 	struct usb_function func;
 	struct uvc_video video;
+	struct completion *vdev_release_done;
+	struct mutex lock;	/* protects func_unbound and func_connected */
+	bool func_unbound;
 	bool func_connected;
 	wait_queue_head_t func_connected_queue;
 
