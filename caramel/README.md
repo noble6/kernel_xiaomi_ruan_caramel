@@ -12,7 +12,6 @@ ruan-u-oss, updated to Linux 5.10.269 GKI from ACK android12-5.10).
 | Root hiding | [SUSFS](https://gitlab.com/simonpunk/susfs4ksu) v2.3.0, all features enabled |
 | Scheduler | [BORE](https://github.com/firelzrd/bore-scheduler) (Burst-Oriented Response Enhancer), on CFS through vendor hooks |
 | Module mounts | NoMount v2.1.0, VFS path redirection for metamodules |
-| Containers | [Droidspaces](https://github.com/ravindu644/Droidspaces-OSS) support: SysV IPC, POSIX mqueue, IPC/PID/user namespaces, devtmpfs, ipset and NAT netfilter |
 | Network | TCP BBR as the default congestion control |
 | Version | `5.10.269-caramel-v3` |
 
