@@ -6,7 +6,7 @@
 # global properties
 properties() { '
 kernel.string=caramel v4 for ruan by 4-8-2-1-1-7
-do.devicecheck=1
+do.devicecheck=0
 do.modules=0
 do.systemless=0
 do.cleanup=1
