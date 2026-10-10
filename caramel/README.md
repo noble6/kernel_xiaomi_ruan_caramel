@@ -12,8 +12,9 @@ ruan-u-oss, updated to Linux 5.10.269 GKI from ACK android12-5.10).
 | Root hiding | [SUSFS](https://gitlab.com/simonpunk/susfs4ksu) v2.3.0, all features enabled |
 | Scheduler | [BORE](https://github.com/firelzrd/bore-scheduler) (Burst-Oriented Response Enhancer), on CFS through vendor hooks |
 | Module mounts | NoMount v2.1.0, VFS path redirection for metamodules |
+| Memory | No swap readahead (`vm.page-cluster` 0), as ruan swaps only to zram |
 | Network | TCP BBR as the default congestion control |
-| Version | `5.10.269-caramel-v3` |
+| Version | `5.10.269-caramel-v4` |
 
 KernelSU is pinned to a main-branch commit (SUSFS targets main, not a
 release), which is newer than the latest manager release. Use the manager
@@ -23,6 +24,10 @@ the "Build Manager" run for 0ff54fab
 `KernelSU_v3.3.0-55-g0ff54fab_32656-release.apk`. An older manager
 reports a version/uapi mismatch. For SUSFS settings, install the
 susfs4ksu module from the SUSFS repo.
+
+Expedited RCU work runs in a workqueue as on 5.10.198
+(`CONFIG_RCU_EXP_KTHREAD` off): 5.10.2xx moved it to a real-time kthread,
+and ruan boots with `rcupdate.rcu_expedited=1`.
 
 ## Compatibility
 
